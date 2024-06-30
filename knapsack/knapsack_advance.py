@@ -20,10 +20,10 @@ def knapsack(index, weight, usedp=False):
     if w[index] <= weight:
         ans = max(ans, knapsack(index + 1, weight - w[index]) + v[index])
 
-    if index not in dp.keys():
-        dp[index] = {}
-
     if usedp:
+        if index not in dp.keys():
+            dp[index] = {}
+
         if weight not in dp[index].keys():
             if len(dp[index].keys()) == 0:
                 dp[index] = {weight: ans}
