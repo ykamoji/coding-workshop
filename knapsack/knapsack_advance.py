@@ -20,10 +20,10 @@ def knapsack(index, weight, usedp=False):
             if weight in dp[index].keys():
                 return dp[index][weight]
 
-    ans = knapsack(index + 1, weight)
+    ans = knapsack(index + 1, weight, usedp)
 
     if w[index] <= weight:
-        ans = max(ans, knapsack(index + 1, weight - w[index]) + v[index])
+        ans = max(ans, knapsack(index + 1, weight - w[index]) + v[index], usedp)
 
     if usedp:
         if index not in dp.keys():
@@ -73,7 +73,7 @@ def knapsack_multiple(index, weight, usedp=False):
     ans = 0
 
     for m_times in range(0, weight // w[index]+1):
-        ans = max(ans, knapsack_multiple(index+1, weight - m_times*w[index]) + m_times*v[index])
+        ans = max(ans, knapsack_multiple(index+1, weight - m_times*w[index]) + m_times*v[index], usedp)
 
     if usedp:
         if index not in dp.keys():
