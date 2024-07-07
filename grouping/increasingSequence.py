@@ -21,7 +21,7 @@ def sequence(index, usedp=False):
             if seq[index] < min(next_sq):
                 local_sub_sq += next_sq
             else:
-                return []
+                continue
 
         if len(local_sub_sq) > len(sub_sq):
             sub_sq = local_sub_sq
