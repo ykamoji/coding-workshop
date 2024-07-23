@@ -17,7 +17,7 @@ def check_exists(index, target, usedp=False):
             if target in dp[index].keys():
                 return dp[index][target]
 
-    ans = check_exists(index + 1, target, usedp) == 1 or check_exists(index + 1, target - s[index], usedp)
+    ans = check_exists(index + 1, target, usedp) or check_exists(index + 1, target - s[index], usedp)
 
     if usedp:
         if index not in dp.keys():
