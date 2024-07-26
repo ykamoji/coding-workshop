@@ -1,4 +1,4 @@
-from utils.dputil import getValue, putValue, getDP
+from utils.dputil import getValue, putValue, printDP, putBacktrack, getBacktrack
 
 str1 = "AGGTAB"
 str2 = "GXTXATB"
@@ -15,10 +15,21 @@ def lcs(i, j, usedp=False):
 
     if usedp: getValue(i, j)
 
-    ans = max(lcs(i + 1, j, usedp), lcs(i, j + 1, usedp))
+    i_inc = lcs(i + 1, j, usedp)
+    j_inc = lcs(i, j + 1, usedp)
+
+    if i_inc > j_inc:
+        ans = i_inc
+        putBacktrack(i, j, 0)
+    else:
+        ans = j_inc
+        putBacktrack(i, j, 1)
 
     if arr_1[i] == arr_2[j]:
-        ans = max(ans, 1 + lcs(i + 1, j + 1, usedp))
+        temp = 1 + lcs(i + 1, j + 1, usedp)
+        if temp > ans:
+            ans = temp
+            putBacktrack(i, j, 2)
 
     if usedp: putValue(i, j, ans)
 
@@ -28,22 +39,38 @@ def lcs(i, j, usedp=False):
 count = lcs(0,0, usedp=True)
 
 print(f"DP:")
-dp = getDP()
-for i in dp.keys():
-    for j in dp[i].keys():
-        print(f"i={i}, j={j}: {dp[i][j]}")
+printDP()
 
 print(f"Longest common subsequence count = {count}")
 
-remaining = count
-sequence = ""
-while remaining > 0:
-    for i in range(len(arr_1)-1, -1, -1):
-        if remaining in dp[i].values():
-            sequence += arr_1[i]
-            remaining -= 1
-            break
+# remaining = count
+# sequence = ""
+# while remaining > 0:
+#     for i in range(len(arr_1)-1, -1, -1):
+#         if remaining in dp[i].values():
+#             sequence += arr_1[i]
+#             remaining -= 1
+#             break
 
-print(f"Longest common subsequence = {sequence}")
+
+sequence = []
+
+def generate(i, j):
+    if i == len(arr_1) and j == len(arr_2):
+        return
+
+    choice = getBacktrack()[i][j]
+    if choice == 0 :
+        generate(i + 1, j)
+    elif choice == 1:
+        generate(i, j + 1)
+    else:
+        sequence.append(str1[i])
+        generate(i + 1, j + 1)
+
+
+generate(0,0)
+
+print(f"Longest common subsequence = {''.join(sequence)}")
 
 

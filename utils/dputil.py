@@ -42,3 +42,9 @@ def getBacktrack():
 def getDP():
     return dp
 
+
+def printDP():
+    for i in dp.keys():
+        for j in dp[i].keys():
+            print(f"i={i}, j={j}: {dp[i][j]}")
+

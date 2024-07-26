@@ -1,15 +1,15 @@
 from utils.dputil import getValue, putValue, getDP, putBacktrack, getBacktrack
 
 
-str1 = "AATU"
-str2 = "ATUA"
+str1 = "AGGTAB"
+str2 = "GXTXATB"
 arr_1 = list(str1)
 arr_2 = list(str2)
 
 
 def diff(i, j, usedp=False):
 
-    if i == len(arr_1) and j == len(arr_2) :
+    if i == len(arr_1) and j == len(arr_2):
         return 0
 
     if usedp: getValue(i, j)
@@ -43,13 +43,9 @@ count = diff(0,0, usedp=True)
 
 print(f"Diff Utility count = {count}")
 
-print(f"DP = {getDP()}")
-# for i in dp.keys():
-#     for j in dp[i].keys():
-#         print(f"i={i}, j={j}: {dp[i][j]}")
+# print(f"DP = {getDP()}")
 
-print(f"Backtrack = {getBacktrack()}")
-
+# print(f"Backtrack = {getBacktrack()}")
 
 def generate(i, j):
 
