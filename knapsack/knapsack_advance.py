@@ -1,3 +1,5 @@
+from utils.dputil import getValue, putValue, getDP
+
 # n = 6
 # v = [6, 2, 3, 5, 1, 4]
 # w = [3, 24, 50, 84, 45, 57]
@@ -15,25 +17,14 @@ def knapsack(index, weight, usedp=False):
     if index == n:
         return 0
 
-    if usedp:
-        if index in dp.keys():
-            if weight in dp[index].keys():
-                return dp[index][weight]
+    if usedp: getValue(index, weight)
 
     ans = knapsack(index + 1, weight, usedp)
 
     if w[index] <= weight:
         ans = max(ans, knapsack(index + 1, weight - w[index]) + v[index], usedp)
 
-    if usedp:
-        if index not in dp.keys():
-            dp[index] = {}
-
-        if weight not in dp[index].keys():
-            if len(dp[index].keys()) == 0:
-                dp[index] = {weight: ans}
-            else:
-                dp[index] = {**dp[index], **{weight: ans}}
+    if usedp: putValue(index, weight, ans)
 
     return ans
 
@@ -65,25 +56,14 @@ def knapsack_multiple(index, weight, usedp=False):
     if index == n:
         return 0
 
-    if usedp:
-        if index in dp.keys():
-            if weight in dp[index].keys():
-                return dp[index][weight]
+    if usedp: getValue(index, weight)
 
     ans = 0
 
     for m_times in range(0, weight // w[index]+1):
         ans = max(ans, knapsack_multiple(index+1, weight - m_times*w[index]) + m_times*v[index], usedp)
 
-    if usedp:
-        if index not in dp.keys():
-            dp[index] = {}
-
-        if weight not in dp[index].keys():
-            if len(dp[index].keys()) == 0:
-                dp[index] = {weight: ans}
-            else:
-                dp[index] = {**dp[index], **{weight: ans}}
+    if usedp: putValue(index, weight, ans)
 
     return ans
 

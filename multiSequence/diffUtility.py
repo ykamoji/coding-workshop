@@ -1,11 +1,10 @@
-from  import getDP, getValue, putValue
+from utils.dputil import getValue, putValue, getDP, putBacktrack, getBacktrack
+
 
 str1 = "AATU"
 str2 = "ATUA"
 arr_1 = list(str1)
 arr_2 = list(str2)
-
-backtrack = {}
 
 
 def diff(i, j, usedp=False):
@@ -13,7 +12,7 @@ def diff(i, j, usedp=False):
     if i == len(arr_1) and j == len(arr_2) :
         return 0
 
-    if usedp: return getValue(i,j)
+    if usedp: getValue(i, j)
 
     count = 1e9
 
@@ -21,37 +20,24 @@ def diff(i, j, usedp=False):
         temp = 1 + diff(i + 1, j, usedp)
         if temp < count:
             count = temp
-            add_kv(i, j,0)
+            putBacktrack(i, j,0)
 
     if j < len(arr_2):
         temp = 1 + diff(i, j + 1, usedp)
         if temp < count:
             count = temp
-            add_kv(i, j,1)
+            putBacktrack(i, j,1)
 
     if i < len(arr_1) and j < len(arr_2) and arr_1[i] == arr_2[j]:
         temp = 1 + diff(i + 1, j + 1, usedp)
         if temp < count:
             count = temp
-            add_kv(i, j,2)
+            putBacktrack(i, j,2)
 
     if usedp: putValue(i, j, count)
 
     return count
 
-
-def add_kv(i, j, value):
-
-    if i not in backtrack.keys():
-        backtrack[i] = {}
-
-    if j not in backtrack[i].keys():
-        if len(backtrack[i].keys()) == 0:
-            backtrack[i] = {j: value}
-        else:
-            backtrack[i] = {**backtrack[i], **{j: value}}
-    else:
-        backtrack[i][j] = value
 
 count = diff(0,0, usedp=True)
 
@@ -62,7 +48,7 @@ print(f"DP = {getDP()}")
 #     for j in dp[i].keys():
 #         print(f"i={i}, j={j}: {dp[i][j]}")
 
-print(f"Backtrack = {backtrack}")
+print(f"Backtrack = {getBacktrack()}")
 
 
 def generate(i, j):
@@ -70,7 +56,7 @@ def generate(i, j):
     if i == len(arr_1) and j == len(arr_2):
         return
 
-    choice = backtrack[i][j]
+    choice = getBacktrack()[i][j]
 
     if choice == 0:
         print(f'-{arr_1[i]}',end=' ')

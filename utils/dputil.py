@@ -1,4 +1,5 @@
 dp = {}
+backtrack = {}
 
 
 def getValue(i, j):
@@ -8,6 +9,7 @@ def getValue(i, j):
 
 
 def putValue(i, j, value):
+
     if i not in dp.keys():
         dp[i] = {}
 
@@ -20,5 +22,23 @@ def putValue(i, j, value):
         dp[i][j] = value
 
 
+def putBacktrack(i, j, value):
+
+    if i not in backtrack.keys():
+        backtrack[i] = {}
+
+    if j not in backtrack[i].keys():
+        if len(backtrack[i].keys()) == 0:
+            backtrack[i] = {j: value}
+        else:
+            backtrack[i] = {**backtrack[i], **{j: value}}
+    else:
+        backtrack[i][j] = value
+
+
+def getBacktrack():
+    return backtrack
+
 def getDP():
     return dp
+
