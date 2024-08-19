@@ -49,7 +49,7 @@ def withRecursion_2():
         if index == 0:
             val = arr[0]
         else:
-            val = max(getValue(-1, index - 1) + arr[index], arr[index])
+            val = max(getValue(-1, index - 1), 0) + arr[index]
 
         putValue(-1, index, val)
 
