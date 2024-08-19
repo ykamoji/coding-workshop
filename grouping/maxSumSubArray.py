@@ -39,12 +39,12 @@ def withRecursion_1():
 
 
 def withRecursion_2():
-    def maxSum(index, usedp=True):
+    def maxSum(index):
 
         if index == arr_len:
             return 0
 
-        if usedp: getValue(-1, index)
+        getValue(-1, index)
 
         if index == 0:
             val = arr[0]
@@ -53,9 +53,9 @@ def withRecursion_2():
 
         putValue(-1, index, val)
 
-        return max(val, maxSum(index + 1, usedp))
+        return max(val, maxSum(index + 1))
 
-    value = maxSum(0, usedp=True)
+    value = maxSum(0)
 
     # printDP()
 
