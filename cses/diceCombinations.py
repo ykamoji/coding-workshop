@@ -4,13 +4,12 @@ from collections import Counter
 from functools import reduce
 from math import factorial
 
-dice = [1, 2, 3, 4, 5, 6]
+dice = [2, 3, 5]
 dice_len = len(dice)
-N = 4
+N = 9
 
 
 def withRec():
-
     def npermutations(l):
         num = factorial(len(l))
         mults = Counter(l).values()
@@ -29,7 +28,7 @@ def withRec():
 
         count = 0
         for times in range(target // dice[level] + 1):
-            count += combinationsCount(level + 1, target - times * dice[level], nums + times*[dice[level]], usedp)
+            count += combinationsCount(level + 1, target - times * dice[level], nums + times * [dice[level]], usedp)
             # print(f"level {level}, times {times} target {target} = {count}")
 
         if usedp: putValue(level, target, count)
@@ -42,7 +41,6 @@ def withRec():
 
 
 def withRecOptimized():
-
     def combinationsCount(target, usedp=False):
 
         if target == 0:
@@ -51,9 +49,9 @@ def withRecOptimized():
         if usedp: getValue(-1, target)
 
         count = 0
-        for i in range(1, dice_len+1):
-            if i <= target:
-                count += combinationsCount(target - i, usedp)
+        for i in range(dice_len):
+            if dice[i] <= target:
+                count += combinationsCount(target - dice[i], usedp)
 
         if usedp: putValue(-1, target, count)
 
@@ -65,19 +63,45 @@ def withRecOptimized():
 
 
 def withIterative():
-
-    for i in range(N+1):
+    for i in range(N + 1):
         if i == 0:
             putValue(-1, i, 1)
         else:
             putValue(-1, i, 0)
-            for j in range(1, dice_len+1):
-                if j <= i:
-                    putValue(-1, i, getValue(-1, i) + getValue(-1, i-j))
+            for j in range(dice_len):
+                if dice[j] <= i:
+                    putValue(-1, i, getValue(-1, i) + getValue(-1, i - dice[j]))
 
     print(f"Number of combinations = {getValue(-1, N)}")
     printDP()
 
+
+def withRecOptimizedOnce():
+    def combinationsCount(level, target, usedp=False):
+
+        if target == 0:
+            return 1
+
+        if level == dice_len:
+            return 0
+
+        if usedp: getValue(level, target)
+
+        count = 0
+        for times in range(target // dice[level] + 1):
+            count += combinationsCount(level + 1, target - times * dice[level], usedp)
+            # print(f"level {level}, times {times} target {target} = {count}")
+
+        if usedp: putValue(level, target, count)
+
+        return count
+
+    count = combinationsCount(0, N, usedp=True)
+    # printDP()
+    print(f"Number of ordered combinations = {count}")
+
+
 # withRec()
 # withRecOptimized()
 # withIterative()
+withRecOptimizedOnce()
