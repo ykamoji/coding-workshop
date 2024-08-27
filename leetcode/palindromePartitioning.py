@@ -36,9 +36,8 @@ def palindromePartition(index, k):
         return dp[index][k]
 
     count = arr_len
-    for i in range(index, arr_len):
-        if i != arr_len - 1:
-            count = min(count, getMinimumPalinChange(index, i) + palindromePartition(i + 1, k - 1))
+    for i in range(index, arr_len-1):
+        count = min(count, getMinimumPalinChange(index, i) + palindromePartition(i + 1, k - 1))
 
     dp[index][k] = count
 
