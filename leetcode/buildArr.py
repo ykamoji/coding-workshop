@@ -28,7 +28,7 @@ def arrayCount(index, cost, previousMax):
 
     count = 0
     for i in range(1, m+1):
-        if previousMax < i or previousMax == 0:
+        if previousMax < i:
             count = (count + arrayCount(index + 1, cost + 1, i)) % MOD
         else:
             count = (count + arrayCount(index + 1, cost, previousMax)) % MOD
@@ -38,5 +38,29 @@ def arrayCount(index, cost, previousMax):
     return count
 
 
+# def arrayCount_iter():
+#
+#     for index in range(n, -1, -1):
+#         for cost in range(k, -1, -1):
+#             for previousMax in range(m, -1, -1):
+#                 if index == n:
+#                     if k == cost:
+#                         dp[index][previousMax][cost] = 1
+#                     else:
+#                         dp[index][previousMax][cost] = 0
+#                 else:
+#                     count = 0
+#                     for i in range(1, m + 1):
+#                         if previousMax < i or previousMax == 0:
+#                             count = (count + dp[index + 1][i][cost + 1]) % MOD
+#                         else:
+#                             count = (count + dp[index + 1][previousMax][cost]) % MOD
+#
+#                     dp[index][previousMax][cost] = count
+#
+#     return dp[0][0][0]
+
+
 totalCount = arrayCount(0, 0, 0)
+# totalCount = arrayCount_iter()
 print(f"Total ways to build array = {totalCount}")
