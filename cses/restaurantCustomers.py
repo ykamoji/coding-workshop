@@ -1,17 +1,18 @@
-arr = [
-    [5, 8],
-    [2, 4],
-    [3, 9]
-]
-
-arr_len = len(arr)
-
-
 def maxCustomers():
 
-    in_res = [times[0] for times in arr]
+    arr_len = int(input())
+    arr = []
+    i = 0
+    in_res = []
+    out_res = []
+    while i < arr_len:
+        arrival, outgoing = input().split()
+        in_res.append(int(arrival))
+        out_res.append(int(outgoing))
+        arr.append([int(arrival), int(outgoing)])
+        i += 1
+
     in_res.sort()
-    out_res = [times[1] for times in arr]
     out_res.sort()
 
     maxCust, currentCustTrack, incoming, outgoing = 0, 0, 0, 0
@@ -29,8 +30,7 @@ def maxCustomers():
 
     return maxCust
 
-
-print(f"Maximum number of customers = {maxCustomers()}")
+print(maxCustomers())
 
 
 
