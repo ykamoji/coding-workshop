@@ -69,11 +69,7 @@ def withIterative():
     sum = -1e10
 
     for i in range(arr_len):
-        if i == 0:
-            last = arr[i]
-        else:
-            last = max(last, 0) + arr[i]
-
+        last = max(last, 0) + arr[i]
         sum = max(sum, last)
 
     print(f"Arr = {arr}")
