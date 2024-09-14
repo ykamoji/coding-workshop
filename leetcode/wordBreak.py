@@ -8,7 +8,7 @@ s_len = len(s)
 
 def combinationAvailable(start):
 
-    if start == 0:
+    if start == s_len:
         return True
 
     if dp[start] != -1:
