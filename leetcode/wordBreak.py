@@ -2,7 +2,7 @@ s = "catsandogcat"
 wordDict = ["cats","dog","sand","and","cat","an"]
 wordDict_len = len(wordDict)
 
-dp = [[-1 for _ in range(len(s)+1)] for _ in range(len(s)+1)]
+dp = [-1 for _ in range(len(s)+1)]
 s_len = len(s)
 
 
