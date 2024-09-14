@@ -27,3 +27,23 @@ def combinationAvailable(start):
     return result
 
 print(f"{combinationAvailable(0)}")
+
+
+def combinationAvailable():
+
+    for start in range(s_len, -1, -1):
+        if start == s_len:
+            dp[start] = True
+        else:
+            result = False
+            for word in wordDict:
+                word_len = len(word)
+                if s[start: start + word_len] == word:
+                    result = result or dp[start + word_len]
+
+            dp[start] = result
+
+    return dp[0]
+
+print(f"{combinationAvailable()}")
+
