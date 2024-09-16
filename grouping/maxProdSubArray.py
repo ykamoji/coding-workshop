@@ -13,7 +13,7 @@ def arr_product(sub_arr):
         sum *= item
     return sum
 
-
+## Doesn't work completely
 def maxProduct():
     val = -1e10
     for i in range(len(arr)):
