@@ -18,7 +18,7 @@ def withRec():
 
         if usedp: getValue(m, n)
 
-        hor, ver = walk(m + 1, n), walk(m, n + 1)
+        hor, ver = walk(m + 1, n, usedp), walk(m, n + 1, usedp)
 
         sum = max(hor, ver) + paths[m][n]
 
