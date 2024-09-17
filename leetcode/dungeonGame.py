@@ -13,7 +13,7 @@ def minPath():
             else:
                 val_h = 1e10 if i + 1 > m - 1 else dp[i + 1][j]
                 val_v = 1e10 if j + 1 > n - 1 else dp[i][j + 1]
-                dp[i][j] = max(0, - dungeon[i][j] + min(val_h, val_v))
+                dp[i][j] = max(1, - dungeon[i][j] + min(val_h, val_v))
 
     return dp[0][0]
 
