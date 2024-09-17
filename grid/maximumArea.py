@@ -34,10 +34,9 @@ def maxArea(i, j, usedp=False):
 
     if usedp: getValue(i, j)
 
-    area = 0
-
-    if grid[i][j] == 1:
-        area = 1 + min(min(maxArea(i - 1, j, usedp), maxArea(i, j - 1, usedp)), maxArea(i - 1, j - 1, usedp))
+    area = 1 + min(min(maxArea(i - 1, j, usedp), maxArea(i, j - 1, usedp)), maxArea(i - 1, j - 1, usedp))
+    if grid[i][j] != 1:
+        area = 0
 
     if usedp: putValue(i, j, area)
 
