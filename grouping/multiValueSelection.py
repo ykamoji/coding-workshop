@@ -1,6 +1,6 @@
 import time
 bounds = [4, 6, 2, 1, 3, 5, 4, 1, 5, 7, 3, 6, 1, 4, 2, 6, 5]
-S = 25
+S = 30
 bounds_len = len(bounds)
 
 
@@ -79,6 +79,31 @@ def withPrefixSum():
     print(f"Total combinations: {dp[(0, S)]} ({duration:5f} ms)")
 
 
+def withPrefixSumAndSpaceOptim():
+    dp = {}
+    start = time.time()
+    for index in range(bounds_len, -1, -1):
+        for target in range(S + 1):
+            if index == bounds_len:
+                if target == 0:
+                    dp[(index % 2, target)] = 1
+                else:
+                    dp[(index % 2, target)] = 0
+            else:
+                x = target - bounds[index] - 1
+                dp[(index % 2, target)] = dp[((index + 1) % 2, target)]
+                if x >= 0:
+                    dp[(index % 2, target)] -= dp[((index + 1) % 2, x)]
+
+        if index < bounds_len:
+            for target in range(1, S + 1):
+                dp[(index % 2, target)] += dp[(index % 2, target - 1)]
+
+    duration = (time.time() - start) * 1000
+    print(f"Total combinations: {dp[(0, S)]} ({duration:5f} ms)")
+
+
 withRec()
 withIterative()
 withPrefixSum()
+withPrefixSumAndSpaceOptim()
