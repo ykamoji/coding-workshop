@@ -1,5 +1,8 @@
 from utils.dputil import getValue, putValue, printDP
 
+# stones_len, K = map(int, input().split())
+# stones = list(map(int, input().split()))
+
 stones = [40, 10, 20, 70, 80, 10, 20, 70, 80, 60]
 K = 4
 
@@ -12,47 +15,47 @@ K = 4
 stones_len = len(stones)
 
 
-def withDP():
-
+def withRec():
+    dp = {}
     def minJumps(index, usedp=False):
 
         if index <= 0:
             return 0
 
-        if usedp: getValue(-1, index)
+        # if usedp: getValue(-1, index)
+        if index in dp:
+            return dp[index]
 
         cost = 1e9
         for i in range(max(index-K, 0), index):
             cost = min(cost, abs(stones[index] - stones[i]) + minJumps(i, usedp))
 
-        if usedp: putValue(-1, index, cost)
-
+        # if usedp: putValue(-1, index, cost)
+        dp[index] = cost
         return cost
 
     cost = minJumps(stones_len-1, usedp=True)
-    printDP()
+    # print(dp)
     print(f"Total cost (DP) = {cost}")
 
 
-def withoutDP():
+def withDP():
+    dp = {}
+    def minJumps():
+        for index in range(stones_len):
+            if index == 0:
+                dp[index] = 0
+            else:
+                cost = 1e9
+                for i in range(max(index - K, 0), index):
+                    cost = min(cost, abs(stones[index] - stones[i]) + dp[i])
+                dp[index] = cost
 
-    def minJumps(index):
+        return dp[stones_len-1]
 
-        if index <= 0:
-            return 0
-
-        cost = 1e9
-        min_stone = stones[index]
-        for i in range(max(index-K, 0), index):
-            temp = abs(stones[index] - stones[i])
-            if temp < cost:
-                cost = temp
-                min_stone = i
-
-        return cost + minJumps(min_stone)
-
-    cost = minJumps(stones_len-1)
+    cost = minJumps()
+    # print(dp)
     print(f"Total cost = {cost}")
 
-withDP()
-withoutDP() ## Optimized
+withRec()
+withDP() ## Optimized
