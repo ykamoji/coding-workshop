@@ -1,7 +1,9 @@
 ## Put N queens that don't attack each other
-N = 8
+from pyarrow import duration
 
-queens = [-1]*N
+N = 10
+
+queens = [-1] * N
 
 
 def check(row, col):
@@ -29,4 +31,31 @@ def NQueens(level):
     return count
 
 
-print(NQueens(0))
+from DynamicProgramming.utils.dputil import getValue, putValue
+import time
+
+
+def NQueens_DP(level):
+    if level > N: return 0
+    if level == N: return 1
+
+    getValue(-1, level)
+
+    count = 0
+    for i in range(N):
+        if check(level, i):
+            queens[level] = i
+            count += NQueens(level + 1)
+            putValue(-1, level, count)
+            queens[level] = -1
+
+
+start = time.time()
+count = NQueens(0)
+duration = time.time() - start
+print(f"NQueens {count}  & recursion Time {duration:.5f}" )
+
+start = time.time()
+NQueens_DP(0)
+duration = time.time() - start
+print(f"NQueens {getValue(-1, 0)} & DP Time {duration:.5f}")
