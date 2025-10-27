@@ -68,12 +68,35 @@ def knapsack_multiple(index, weight, usedp=False):
     return ans
 
 
-print(f"Maximum value = {knapsack(0, W, True)}")
+dpo = {}
+def knapsack_multiple_optim(index, weight):
 
-generate(0, W)
+    if index == n:
+        return 0
 
-print(f"Items={final_list}")
+    if (index, weight) in dpo:
+        return dpo[(index, weight)]
 
-print(f"Values = {', '.join([str(v) for v,w in final_list])}")
+    ans = knapsack_multiple_optim(index + 1, weight)
 
-print(f"Weights = {', '.join([str(w) for v,w in final_list])} = {sum([w for v,w in final_list])}")
+    if w[index] <= weight:
+        ans = max(ans, knapsack_multiple_optim(index, weight - w[index]) + v[index])
+
+    dpo[(index, weight)] = ans
+
+    return ans
+
+
+# print(f"Maximum value = {knapsack(0, W, True)}")
+
+# generate(0, W)
+
+# print(f"Items={final_list}")
+#
+# print(f"Values = {', '.join([str(v) for v,w in final_list])}")
+#
+# print(f"Weights = {', '.join([str(w) for v,w in final_list])} = {sum([w for v,w in final_list])}")
+
+
+print(f"Multiple {knapsack_multiple(0, W, usedp=True)}")
+print(f"Multiple optimized {knapsack_multiple_optim(0, W)}")
