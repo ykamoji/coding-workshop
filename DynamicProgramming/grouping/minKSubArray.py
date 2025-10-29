@@ -32,3 +32,24 @@ def k_partitions(index, k, usedp=False):
 print(f"Sum of minimum partitions = {k_partitions(0, K, True)}")
 
 print(getDP())
+
+dp = [[-1] * (K + 1) for _ in range(arr_len + 1)]
+
+
+def min_k_subarray(i, k):
+    if k < 0: return 1e10
+
+    if i == -1: return 0 if k == 0 else 1e10
+
+    if dp[i][k] != -1: return dp[i][k]
+
+    dp[i][k] = 1e10
+    sub_min = arr[i]
+    for j in range(i - 1, -2, -1):  # looping backwards for -1,0,...i-1
+        dp[i][k] = min(dp[i][k], sub_min + min_k_subarray(j, k - 1))
+        sub_min = min(sub_min, arr[j])
+
+    return dp[i][k]
+
+
+print(min_k_subarray(arr_len - 1, K))
