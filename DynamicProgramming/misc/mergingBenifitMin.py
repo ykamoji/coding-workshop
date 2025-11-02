@@ -4,7 +4,7 @@ from DynamicProgramming.utils.dputil import putValue, getValue, printDP, putBack
 items = [7, 6, 8, 6, 1, 1]
 total = len(items)
 
-
+## Incorrect solution
 def maximumBenefit(level, m_items, usedp=False):
     if level == total - 1:
         return 0
