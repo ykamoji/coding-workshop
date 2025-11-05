@@ -1,8 +1,8 @@
 from math import inf
 import time
 
-grid = [[6,7,1,20,11],[4,5,18,23,28]]
-K = 1
+grid = [[1,3,3],[2,5,4],[4,3,5]]
+K = 7
 
 start_time = time.time()
 
@@ -20,28 +20,34 @@ dp = [[[-1] * (K + 1) for _ in range(n+1)] for _ in range(m+1)]
 
 def add_jumps(from_i, from_j, to_i, to_j):
     if (from_i, from_j) in transports:
-        transports[(from_i, from_j)] += [(to_i, to_j)]
+        transports[(from_i, from_j)].add((to_i, to_j))
     else:
-        transports[(from_i, from_j)] = [(to_i, to_j)]
+        transports[(from_i, from_j)] = {(to_i, to_j)}
 
 
 number_point_map = {}
-# count = 0
 for i in range(m * n):
     start_i = i // n
     start_j = i % n
+
     for j in range(i + 1, m * n):
         end_i = j // n
         end_j = j % n
-        # print(f"{count} Comparing {flatten_list[i]}({start_i},{start_j}) & {flatten_list[j]}({end_i},{end_j})")
-        # count += 1
-        if flatten_list[i] >= flatten_list[j]:
+
+        if flatten_list[i] > flatten_list[j]:
             add_jumps(start_i, start_j, end_i, end_j)
+        elif flatten_list[i] < flatten_list[j]:
+            add_jumps(end_i, end_j, start_i, start_j)
         else:
+            add_jumps(start_i, start_j, end_i, end_j)
             add_jumps(end_i, end_j, start_i, start_j)
 
-# for start, jumps in transports.items():
-#     print(f"({start}) => {jumps}")
+
+
+for start, jumps in transports.items():
+    print(f"({start}) => {jumps}")
+
+# print(number_point_map)
 
 
 def traverse(i, j, k):
@@ -71,24 +77,6 @@ def traverse(i, j, k):
     dp[i][j][k] = ans
 
     return ans
-
-# def traverse():
-#     dp = [[[inf] * (K + 1) for _ in range(n+1)] for _ in range(m+1)]
-#
-#     for k in range(K):
-#         dp[m-1][n-1][k] = 0
-#
-#     for i in range(m-1, -1, -1):
-#         for j in range(n-1, -1, -1):
-#             for k in range(K):
-#                 ans_1 = dp[i+1][j][k] + grid[i + 1][j]
-#                 ans_2 = dp[i][j+1][k] + grid[i][j + 1]
-#                 ans_3 = inf
-#                 if (i, j) in transports:
-#                     for x, y in transports[(i, j)]:
-#                         dp_cost = dp[x][y][k-1]
-#                         if dp_cost < ans_3:
-#                             ans_3 = dp_cost
 
 
 def generate(i, j, k):
