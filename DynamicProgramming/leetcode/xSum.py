@@ -1,4 +1,6 @@
 import json
+import bisect
+import time
 
 # Check if key2, freq2 is better than key1, freq1
 def checkOrdering(key1, freq1, key2, freq2):
@@ -176,16 +178,20 @@ def xsum(k, x, nums, debug=False):
 
 
 if __name__ == '__main__':
+
     with open("../../testcases/xSum.json", "r") as f:
         testcases = json.load(f)
+
 
     for testcase in testcases:
         nums = testcase["nums"]
         x = testcase["x"]
         k = testcase["k"]
         expected = testcase["output"]
+        start = time.time()
         actual = xsum(k, x, nums)
+        duration = (time.time() - start)*1000
         if expected != actual:
             print(f"\n!!! Failed Expected {expected}, got {actual}\n")
         else:
-            print(f"\nPassed nums={nums}, x={x}, k={k}, output = {expected}\n")
+            print(f"\n({duration:.4f}ms) Passed nums={nums}, x={x}, k={k}, output = {expected}\n")
