@@ -1,4 +1,4 @@
-nums = [4, 5, 3, 5, 2, 3, 6, 6, 5, 4]
+nums = [4,5,3,5,2,3,6,6,5,4]
 k = 4
 x = 2
 
@@ -71,7 +71,7 @@ class Deque:
                     break
                 i += inc
 
-            if idx != i: self.arr.insert(i, self.arr.pop(idx))
+            if idx != i: self.arr.insert(i-1, self.arr.pop(idx))
 
 
 def remove_operation(remove_item, topx, rest, s, x):
