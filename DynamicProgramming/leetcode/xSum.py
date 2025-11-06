@@ -52,23 +52,19 @@ class Deque:
             return self.arr.pop(idx)
         else:
             if old_freq < update_freq:
-                inc = -1
-
-                def condition(i):
-                    return i > 0
+                i = idx - 1
+                while i > 0:
+                    if not checkOrdering(self.arr[i][0], self.arr[i][1], item, update_freq):
+                        break
+                    i -= 1
             else:
-                inc = 1
+                i = idx + 1
+                while i < len(self.arr):
+                    if checkOrdering(self.arr[i][0], self.arr[i][1], item, update_freq):
+                        break
+                    i += 1
 
-                def condition(i):
-                    return i < len(self.arr)
-
-            i = idx
-            while condition(i):
-                if not checkOrdering(self.arr[i][0], self.arr[i][1], item, update_freq):
-                    break
-                i += inc
-
-            if idx != i: self.arr.insert(i-1, self.arr.pop(idx))
+            if idx != i: self.arr.insert(max(i-1,0), self.arr.pop(idx))
 
 
 def remove_operation(remove_item, topx, rest, s, x):
@@ -170,9 +166,9 @@ def xsum(k, x, nums, debug=False):
     arr.append(s)
     for i in range(1, n - k + 1):
         if debug: print(f"Current: : {topx} s = {s} {rest}")
-        if debug: print(f"Removing {nums[i-1]}: : {topx} s = {s} {rest} ")
+        if debug: print(f"Removing {nums[i-1]}")
         s = remove_operation(nums[i - 1], topx, rest, s, x)
-        if debug: print(f"Adding {nums[i+k-1]} : {topx} s = {s} {rest} ")
+        if debug: print(f"Adding {nums[i+k-1]}")
         s = add_operation(nums[i + k - 1], topx, rest, s, x)
         if debug: print(f"Updated: {topx} s = {s} {rest}\n")
         arr.append(s)
