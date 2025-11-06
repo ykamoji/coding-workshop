@@ -1,7 +1,4 @@
-nums = [4,5,3,5,2,3,6,6,5,4]
-k = 4
-x = 2
-
+import json
 
 # Check if key2, freq2 is better than key1, freq1
 def checkOrdering(key1, freq1, key2, freq2):
@@ -58,7 +55,7 @@ class Deque:
                 inc = -1
 
                 def condition(i):
-                    return i >= 0
+                    return i > 0
             else:
                 inc = 1
 
@@ -67,7 +64,7 @@ class Deque:
 
             i = idx
             while condition(i):
-                if checkOrdering(self.arr[i][0], self.arr[i][1], item, update_freq):
+                if not checkOrdering(self.arr[i][0], self.arr[i][1], item, update_freq):
                     break
                 i += inc
 
@@ -143,7 +140,17 @@ def add_operation(add_item, topx, rest, s, x):
     return s
 
 
-def xsum(k, x, nums, freqMap):
+def xsum(k, x, nums, debug=False):
+
+    freqMap = {}
+    for item in nums[:k]:
+        if item in freqMap:
+            freqMap[item] += 1
+        else:
+            freqMap[item] = 1
+
+    # print(freqMap)
+
     n = len(nums)
     arr = []
 
@@ -161,27 +168,28 @@ def xsum(k, x, nums, freqMap):
     for item, freq in topx:
         s += item * freq
     arr.append(s)
-    print(f"Current: : {topx} s = {s} {rest} \n")
     for i in range(1, n - k + 1):
+        if debug: print(f"Current: : {topx} s = {s} {rest}")
+        if debug: print(f"Removing {nums[i-1]}: : {topx} s = {s} {rest} ")
         s = remove_operation(nums[i - 1], topx, rest, s, x)
-        # print(f"\nAfter removing {nums[i-1]}: : {topx} s = {s} {rest} ")
+        if debug: print(f"Adding {nums[i+k-1]} : {topx} s = {s} {rest} ")
         s = add_operation(nums[i + k - 1], topx, rest, s, x)
-        # print(f"\nAfter adding {nums[i+k-1]} : {topx} s = {s} {rest} ")
-        print(f"Adding {nums[i + k - 1]} and removing {nums[i - 1]}")
-        print(f"Current: : {topx} s = {s} {rest} \n")
+        if debug: print(f"Updated: {topx} s = {s} {rest}\n")
         arr.append(s)
     return arr
 
 
-freqMap = {}
-for item in nums[:k]:
-    if item in freqMap:
-        freqMap[item] += 1
-    else:
-        freqMap[item] = 1
+if __name__ == '__main__':
+    with open("../../testcases/xSum.json", "r") as f:
+        testcases = json.load(f)
 
-# print(freqMap)
-
-arr = xsum(k, x, nums, freqMap)
-
-print(arr)
+    for testcase in testcases:
+        nums = testcase["nums"]
+        x = testcase["x"]
+        k = testcase["k"]
+        expected = testcase["output"]
+        actual = xsum(k, x, nums)
+        if expected != actual:
+            print(f"\n!!! Failed Expected {expected}, got {actual}\n")
+        else:
+            print(f"\nPassed nums={nums}, x={x}, k={k}, output = {expected}\n")
