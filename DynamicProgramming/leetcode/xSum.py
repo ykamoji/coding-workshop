@@ -1,5 +1,5 @@
-nums = [3,8,7,8,7,5]
-k = 2
+nums = [4,5,3,5,2,3,6,6,5,4]
+k = 4
 x = 2
 
 
@@ -34,6 +34,7 @@ class Deque:
     def pop(self, idx):
         return self.arr.pop(idx)
 
+
     def add(self, obj):
         item, freq = obj
         for idx, arr_item in enumerate(self.arr):
@@ -55,11 +56,12 @@ class Deque:
         if self.arr[idx][1] == 0:
             return self.arr.pop(idx)
         else:
-            insert_idx = 0
             for arr_idx, arr_item in enumerate(self.arr):
                 insert_idx = arr_idx
                 if checkOrdering(arr_item[0], arr_item[1], item, update_freq):
                     break
+            else:
+                insert_idx = len(self.arr)
 
             if idx != insert_idx - 1: self.arr.insert(insert_idx, self.arr.pop(idx))
 
@@ -153,13 +155,14 @@ def xsum(k, x, nums, freqMap):
     for item, freq in topx:
         s += item * freq
     arr.append(s)
-    print(f"\nCurrent: : {topx} s = {s} {rest} ")
+    print(f"Current: : {topx} s = {s} {rest} \n")
     for i in range(1, n - k + 1):
         s = remove_operation(nums[i - 1], topx, rest, s, x)
-        print(f"\nAfter removing {nums[i-1]}: : {topx} s = {s} {rest} ")
+        # print(f"\nAfter removing {nums[i-1]}: : {topx} s = {s} {rest} ")
         s = add_operation(nums[i + k - 1], topx, rest, s, x)
-        print(f"\nAfter adding {nums[i+k-1]} : {topx} s = {s} {rest} ")
-        print(f"\nCurrent: : {topx} s = {s} {rest} ")
+        # print(f"\nAfter adding {nums[i+k-1]} : {topx} s = {s} {rest} ")
+        print(f"Adding {nums[i + k - 1]} and removing {nums[i - 1]}")
+        print(f"Current: : {topx} s = {s} {rest} \n")
         arr.append(s)
     return arr
 
