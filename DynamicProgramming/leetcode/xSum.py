@@ -1,4 +1,4 @@
-nums = [4,5,3,5,2,3,6,6,5,4]
+nums = [4, 5, 3, 5, 2, 3, 6, 6, 5, 4]
 k = 4
 x = 2
 
@@ -25,7 +25,6 @@ class Deque:
     def __len__(self):
         return len(self.arr)
 
-
     def getFreq(self, key):
         for i, (k, v) in enumerate(self.arr):
             if k == key: return i, v
@@ -33,7 +32,6 @@ class Deque:
 
     def pop(self, idx):
         return self.arr.pop(idx)
-
 
     def add(self, obj):
         item, freq = obj
@@ -56,31 +54,40 @@ class Deque:
         if self.arr[idx][1] == 0:
             return self.arr.pop(idx)
         else:
-            for arr_idx, arr_item in enumerate(self.arr):
-                insert_idx = arr_idx
-                if checkOrdering(arr_item[0], arr_item[1], item, update_freq):
-                    break
-            else:
-                insert_idx = len(self.arr)
+            if old_freq < update_freq:
+                inc = -1
 
-            if idx != insert_idx - 1: self.arr.insert(insert_idx, self.arr.pop(idx))
+                def condition(i):
+                    return i >= 0
+            else:
+                inc = 1
+
+                def condition(i):
+                    return i < len(self.arr)
+
+            i = idx
+            while condition(i):
+                if checkOrdering(self.arr[i][0], self.arr[i][1], item, update_freq):
+                    break
+                i += inc
+
+            if idx != i: self.arr.insert(i, self.arr.pop(idx))
 
 
 def remove_operation(remove_item, topx, rest, s, x):
-
     idx, freq = topx.getFreq(remove_item)
 
     if idx > -1:
         # If item to remove is in topx
         # If freq == 0, remove it from the top list
-        topx.update(remove_item, freq-1)
+        topx.update(remove_item, freq - 1)
         s -= remove_item
 
         if len(topx) < x and len(rest) > 0:
             # if length is less than x then add the best rest into the topx if available
-                topx.add(rest[0])
-                best_rest = rest.pop(0)
-                s += best_rest[0] * best_rest[1]
+            topx.add(rest[0])
+            best_rest = rest.pop(0)
+            s += best_rest[0] * best_rest[1]
         else:
             # check if the frequency in topx is now lower or equal than best in rest
             if len(rest) > 0 and checkOrdering(topx[-1][0], topx[-1][1], rest[0][0], rest[0][1]):
@@ -103,12 +110,11 @@ def remove_operation(remove_item, topx, rest, s, x):
 
 
 def add_operation(add_item, topx, rest, s, x):
-
     idx, freq = topx.getFreq(add_item)
 
     if idx > -1:
         # If item to add is in topx, no changes to rest positioning, but S and topx change
-        topx.update(add_item, freq+1)
+        topx.update(add_item, freq + 1)
         s += add_item
     elif len(topx) < x:
         # if topx is less than x, place it here.
@@ -119,7 +125,7 @@ def add_operation(add_item, topx, rest, s, x):
         idx, freq = rest.getFreq(add_item)
         if idx > -1:
             # Check if any reordering of rest is needed
-            rest.update(add_item, freq+1)
+            rest.update(add_item, freq + 1)
         else:
             # add to rest and check if we need to push it to topx and update S
             rest.add([add_item, 1])
