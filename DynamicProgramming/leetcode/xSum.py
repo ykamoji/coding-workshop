@@ -53,18 +53,18 @@ class Deque:
         else:
             if old_freq < update_freq:
                 i = idx - 1
-                while i > 0:
+                while i >= 0:
                     if not checkOrdering(self.arr[i][0], self.arr[i][1], item, update_freq):
                         break
                     i -= 1
+                self.arr.insert(i+1, self.arr.pop(idx))
             else:
                 i = idx + 1
                 while i < len(self.arr):
                     if checkOrdering(self.arr[i][0], self.arr[i][1], item, update_freq):
                         break
                     i += 1
-
-            if idx != i: self.arr.insert(max(i-1,0), self.arr.pop(idx))
+                self.arr.insert(i-1, self.arr.pop(idx))
 
 
 def remove_operation(remove_item, topx, rest, s, x):
